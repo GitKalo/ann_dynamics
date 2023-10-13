@@ -1,3 +1,5 @@
+# ANNs through the lens of dynamical systems
+
 This work was a part of a Master's thesis titled *Artificial neural networks through the lens of dynamical systems theory* for the Masters in Physics of Complex Systems at IFISC (UIB-CSIC), academic year 2022/23.
 
 Broadly, the approach is to record the training trajectory of ANNs through weight space (under GD) and use dynamical systems concepts and methods to analyze the trajectories.
