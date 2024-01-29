@@ -58,7 +58,11 @@ def pert_normal(w1, mean=0, std=0.01) :
 
     return w2
 
-def pert_uniform(w1, eps=0.05) :    # Does this actually sample the "ball" uniformly?
+def pert_uniform(w1, eps) :
+    """
+    Perturb a set of weights `w1` by adding a random number
+     uniformly distributed in the range (-`eps`, `eps`).
+    """
     w2 = [w.copy() for w in w1]
 
     w2[0] += np.random.random_sample(w2[0].shape) * (2 * eps) - eps
@@ -232,7 +236,7 @@ def train(
         return tuple(out_list)  
     else : return out_list[0]   # If only weights return as object
 
-def train_multiple_seq(n_pert, w1_init, eps, **train_args) :
+def train_multiple_seq(n_pert, w1_init, eps, pert_func=pert_uniform, **train_args) :
     '''
     Train an initial condition defined by `w1_init` and `n_pert` perturbations, and return the weights for all.
     '''
@@ -248,7 +252,7 @@ def train_multiple_seq(n_pert, w1_init, eps, **train_args) :
     # l2s = []
     for i in range(n_pert) :
         # w2, l2 = train(initial_weights=pert_uniform(w1_init, eps), **train_args)
-        w2 = train(initial_weights=pert_uniform(w1_init, eps), **train_args)
+        w2 = train(initial_weights=pert_func(w1_init, eps), **train_args)
         w2s.append(w2)
         # l2s.append(l2)
 
