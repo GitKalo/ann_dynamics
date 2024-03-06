@@ -47,8 +47,6 @@ with h5py.File('results/epsilon_full.h5', 'r') as f :
     #         inits.append(perts)
     #     final_weights.append(inits)
 
-breakpoint()
-
 train_args = dict(
     batch_size = 120,
     n_sample_points = post_learn_epochs,     # Sample at every effective epoch
