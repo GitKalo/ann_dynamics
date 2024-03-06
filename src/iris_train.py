@@ -152,8 +152,6 @@ def train(
         return_loss=True,
         return_model=False,
         lr=SGD_LR_DEFAULT,
-        with_softmax=False,
-        with_sigmoid=False
         ) :
     
     if n_sample_points is not None :    # Sample points override sample period
@@ -177,14 +175,9 @@ def train(
             OUTPUT_DIM,
             kernel_initializer=w_const(initial_weights[2]),
             bias_initializer=w_const(initial_weights[3]),
-            activation=activation
+            activation=tf.keras.activations.softmax
         )
     ])
-
-    if with_softmax :
-        model.layers[-1].activation = tf.keras.activations.softmax
-    elif with_sigmoid :
-        model.layers[-1].activation = tf.keras.activations.sigmoid
 
     model.compile(
         loss=keras.losses.SparseCategoricalCrossentropy(),
@@ -382,7 +375,7 @@ def get_empty_model(h_dim) :
         ),
         keras.layers.Dense(
             OUTPUT_DIM,
-            activation=ACTIVATION_DEFAULT
+            activation=tf.keras.activations.softmax
         )
     ])
 
