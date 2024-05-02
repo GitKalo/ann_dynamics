@@ -152,8 +152,7 @@ def train(
         return_loss=True,
         return_model=False,
         lr=SGD_LR_DEFAULT,
-        regularize=False,
-        l2_penalty=0.01
+        l2_penalty=0    # 0 => no regularization
         ) :
     
     if n_sample_points is not None :    # Sample points override sample period
@@ -171,21 +170,17 @@ def train(
             h_dim,
             kernel_initializer=w_const(initial_weights[0]),
             bias_initializer=w_const(initial_weights[1]),
-            activation=activation
+            activation=activation,
+            kernel_regularizer = tf.keras.regularizers.L2(l2_penalty),
         ),
         keras.layers.Dense(
             OUTPUT_DIM,
             kernel_initializer=w_const(initial_weights[2]),
             bias_initializer=w_const(initial_weights[3]),
-            activation=tf.keras.activations.softmax
+            activation=tf.keras.activations.softmax,
+            kernel_regularizer = tf.keras.regularizers.L2(l2_penalty),
         )
     ])
-
-    if regularize : # Apply L2 regularization to the weight decay at all layers
-        # print('using l2 penalty ' + str(l2_penalty))
-        for layer in model.layers :
-            layer.kernel_regularizer = tf.keras.regularizers.L2(l2_penalty)
-            layer.bias_regularizer = tf.keras.regularizers.L2(l2_penalty)
 
     model.compile(
         loss=keras.losses.SparseCategoricalCrossentropy(),
